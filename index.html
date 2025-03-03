@@ -17,13 +17,13 @@
         <h1 class="text-2xl font-bold">Fashion Hub</h1>
         <div>
             <input type="text" placeholder="john@gmail.com" class="p-2 border rounded-md" id="user">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-md" onclick="loginUser()">Sign In</button>
-            <button class="bg-green-500 text-white px-4 py-2 rounded-md ml-2">Sign Up</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md" onclick="identifyUser('login')">Sign In</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-md ml-2" onclick="identifyUser('signup')">Sign Up</button>
         </div>
     </header>
 
     <script type = "text/javascript">
-        function loginUser() {
+        function identifyUser(identify_type) {
             // Get the value from the input field
             var userInput = document.getElementById("user").value;
             
@@ -32,15 +32,28 @@
                 // Create the userId by applying btoa encoding to the user input
                 var userId = btoa(userInput);
                 
-                // Fire the Segment identify call with the userId
-                analytics.identify(userId, {
-                    email: userInput  // You can also add other properties if needed
-                });
+                if (identify_type = 'login') {
 
-                console.log("Identify call fired with userId:", userId);
-            } else {
-                console.log("Please enter a user value.");
-            }
+                    // Fire the login Identify Call
+                    analytics.identify(userId);
+                    // Fire the Signed In Track Call
+                    analytics.track("Signed In");
+
+                } else if (identify_type = 'signup') {
+
+                    // Fire the signup Identify Call
+                    analytics.identify(userId, {
+                        email: userInput,
+                        firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
+                        lastName: lastNames[Math.floor(Math.random() * lastNames.length)]
+                    });
+
+                    // Fire the Signed Up Track Call
+                    analytics.track("Signed Up", {
+                        registration_type: "standard" 
+                    });
+
+                }
         }
     </script>
 
@@ -72,6 +85,51 @@
                 }
             ];
          </script>
+
+         <script>
+            const lastNames = [
+              "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
+              "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Roberts",
+              "Lopez", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Adams",
+              "Baker", "Gonzalez", "Hernandez", "Green", "Perez", "Nelson", "Carter", "Mitchell", "Reed", "Cook",
+              "Morgan", "Bell", "Murphy", "Bailey", "Rivera", "Cooper", "Richardson", "Cox", "Howard", "Ward",
+              "Flores", "King", "Garza", "Alexander", "Ramirez", "Green", "Phillips", "Evans", "Parker", "Edwards",
+              "Collins", "Stewart", "Sanchez", "Morris", "Rogers", "Reyes", "Jenkins", "Perry", "Powell", "Long",
+              "Patterson", "Hughes", "Washington", "Butler", "Simpson", "Graham", "Kim", "Scott", "Duncan", "Fernandez",
+              "Murphy", "Wagner", "Riley", "Gibson", "Bradley", "Williamson", "Chavez", "Wallace", "Bishop", "Schmidt",
+              "Daniels", "Curtis", "Sullivan", "Howard", "Barnes", "Fisher", "Henderson", "Gordon", "Mendez", "Shaw",
+              "Fowler", "Hansen", "Bauer", "Casey", "Carson", "Blake", "James", "Bryant", "Carlson", "Grant",
+              "Graham", "Harrison", "Gomez", "Vasquez", "Wells", "Jordan", "Bennett", "Perez", "Chapman", "Mason",
+              "Nichols", "Curtis", "Bryan", "Guzman", "Chavez", "Ramos", "Hicks", "Hunt", "Dunn", "Simmons",
+              "Fox", "Jacobson", "Chavez", "Mills", "Garner", "Bates", "Shaw", "Gentry", "Snyder", "Reed",
+              "Stephens", "Ryan", "Stewart", "Craig", "Hansen", "Roth", "Watson", "Serrano", "Patel", "Murray",
+              "Harmon", "Stanley", "Williamson", "Jordan", "Alvarez", "Day", "Kennedy", "Bailey", "Matthews",
+              "Palmer", "Burgess", "Bowers", "Snyder", "Francis", "Curtis", "Davidson", "Wallace", "Gibson", "Rice",
+              "Dawson", "Blanchard", "Carroll", "Fox", "Freeman", "Harrison", "Morrison", "Walsh", "Chapman", "Simpson"
+            ];
+            const firstNames = [
+              "James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Charles", "Thomas",
+              "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua",
+              "Kenneth", "Kevin", "Brian", "George", "Timothy", "Ronald", "Edward", "Jason", "Jeffrey", "Ryan",
+              "Jacob", "Gary", "Nicholas", "Eric", "Stephen", "Larry", "Justin", "Scott", "Brandon", "Benjamin",
+              "Samuel", "Gregory", "Frank", "Alexander", "Patrick", "Jack", "Dennis", "Jerry", "Tyler", "Aaron",
+              "Henry", "Douglas", "Peter", "Jose", "Adam", "Ethan", "Mark", "George", "Christian", "Keith",
+              "Carl", "Arthur", "Joe", "Austin", "Jesse", "Dylan", "Jordan", "Zachary", "Nathan", "Kyle",
+              "Walter", "Peter", "Kyle", "Alan", "Carl", "Arthur", "Gerald", "Roger", "Keith", "Terry",
+              "Lawrence", "Victor", "Chad", "Billy", "Bryan", "Joe", "Albert", "Derrick", "Willie", "Bruce",
+              "Harry", "Eugene", "Bobby", "Randy", "Louis", "Russell", "Barry", "Johnny", "Philip", "Vincent",
+              "Martin", "Francis", "Allen", "Glenn", "Samuel", "Maurice", "Dean", "Craig", "Lee", "Roy",
+              "Jimmy", "Johnny", "Francisco", "Manuel", "Raymond", "Louis", "Ralph", "Gene", "Gilbert", "Terry",
+              "Juan", "Craig", "Shawn", "Ralph", "Leonard", "Carlos", "Earl", "Jake", "Fred", "Jim",
+              "Tony", "Francisco", "Victor", "Nathaniel", "Leroy", "Clarence", "Samuel", "Willard", "Joel", "Ernest",
+              "Andre", "Maurice", "Stanley", "Rick", "Rodney", "Tom", "Harry", "Jon", "Carlton", "Leon",
+              "Francis", "Erik", "Wayne", "Troy", "Glen", "Gary", "Martin", "Melvin", "Todd", "Alfred",
+              "Don", "Leo", "Clifford", "Curtis", "Sam", "Howard", "Dale", "Leo", "Glenn", "Danny",
+              "Lee", "Tim", "Bruce", "Willie", "Bert", "Cliff", "Edwin", "Henry", "Jonas", "Luis",
+              "Jerome", "Dean", "Alvin", "Wesley", "Ray", "Cedric", "Gordon", "Jackie", "Benny", "Terry"
+            ];
+
+        </script>
 
          <!-- storing cart info -->
          <script>
